@@ -1,5 +1,6 @@
 package com.ricardo_segovia.goodfinances;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +43,12 @@ public class PrincipalActivity extends AppCompatActivity
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        Intent intent = getIntent();
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Toast.makeText(this,query, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -71,6 +79,9 @@ public class PrincipalActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_search) {
+            onSearchRequested();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -84,6 +95,8 @@ public class PrincipalActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            Intent i = new Intent(getApplicationContext(), RecordActivity.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_slideshow) {
 
